@@ -18,6 +18,7 @@ router.post("/", async (req, res) => { //passing request and response as a async
 
 
 //get all pins
+//passing a async function 
 router.get("/", async (req, res) => {
     try {
         const pins = await Pin.find(); //finding all the pins in our model
