@@ -1,4 +1,4 @@
-//calling mongoose
+//importing mongoose
 const mongoose = require("mongoose");
 
 
