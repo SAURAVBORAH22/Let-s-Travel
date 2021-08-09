@@ -8,6 +8,8 @@ const dotenv = require("dotenv");
 const app = express();
 ///calling the pins file
 const pinRoute = require("./routes/pins");
+//calling the users file
+const userRoute = require("./routes/users");
 
 //configuring the dotenv
 dotenv.config();
@@ -28,6 +30,7 @@ mongoose.connect(process.env.MONGO_URL, {
 
 //defining the route
 app.use("/api/pins", pinRoute);
+app.use("/api/users", userRoute);
 
 //deciding the port
 app.listen(8800, () => {
