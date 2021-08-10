@@ -3,10 +3,13 @@
 import { useState } from 'react';
 
 //importing the ReactMapGl , marker 
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 
 //importing the room marker
-import { Room } from '@material-ui/icons';
+import { Room, Star } from '@material-ui/icons';
+
+//importing the app.css file
+import "./app.css";
 
 function App() {
     //the usestate hook defining and seting the viewport
@@ -34,6 +37,31 @@ function App() {
                     offsetTop={-10}>
                     <Room style={{ fontSize: viewport.zoom * 7, color: 'slateblue' }} />
                 </Marker>
+                {/* <Popup //popup:- https://visgl.github.io/react-map-gl/docs/api-reference/popup
+                    latitude={27.1751} //latitude of the popup
+                    longitude={78.0421} //logitutde of the popup
+                    closeButton={true} //providing close button
+                    closeOnClick={false} //whether to close or not when clicked close button
+                    anchor="left" //the anchor position  
+                >
+                    <div className="card">
+                        <label>Place</label>
+                        <h4 className="place">Taj Mahal</h4>
+                        <label>Review</label>
+                        <p className="desc">Beautiful place. I like it.</p>
+                        <label>Rating</label>
+                        <div className="stars">
+                            <Star className="star" />
+                            <Star className="star" />
+                            <Star className="star" />
+                            <Star className="star" />
+                            <Star className="star" />
+                        </div>
+                        <label>Information </label>
+                        <span className="username">Created by <b>Saurav</b> </span>
+                        <span className="date">1 hour ago </span>
+                    </div>
+                </Popup> */}
             </ReactMapGL>
         </div>
     );
