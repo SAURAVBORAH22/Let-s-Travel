@@ -19,7 +19,7 @@ import { format } from "timeago.js";
 
 function App() {
     //temporary current user
-    const currentUser = "SB"
+    const currentUser = "Saurav Borah"
 
     //creating a usestate hook for setting and using pins
     const [pins, setPins] = useState([]);
@@ -29,6 +29,16 @@ function App() {
 
     //creating another useState hook for setting up a new place in our map
     const [newPlace, setNewPlace] = useState(null);
+
+    //creating a usestate hook for setting title
+    const [title, setTitle] = useState(null);
+
+    //creating a usestate hook for setting description
+    const [desc, setDesc] = useState(null);
+
+    //creating a usestate hook for setting rating
+    const [rating, setRating] = useState(0);
+
 
     //the usestate hook defining and seting the viewport
     //https://visgl.github.io/react-map-gl/docs/get-started/get-started
@@ -72,6 +82,29 @@ function App() {
         });
     };
 
+
+    //function to handle submit
+    const handleSubmit = async (e) => {
+        e.preventDefault(); //calling this during any stage of event flow cancels the event
+        //creating object const new pin
+        const newPin = {
+            username: currentUser,
+            title,
+            desc,
+            rating,
+            lat: newPlace.lat,
+            long: newPlace.long,
+        }
+
+        try {
+            const res = await axios.post("/pins", newPin);//posting info to backend 
+            setPins([...pins, res.data]);//adding the new pin to the pins array
+            setNewPlace(null);//clearing the new place
+        } catch (err) {
+            console.log(err);//logging the error
+        }
+    }
+
     return (
         <div className="App">
             <ReactMapGL
@@ -88,8 +121,9 @@ function App() {
                         <Marker //marker :-https://visgl.github.io/react-map-gl/docs/api-reference/marker
                             latitude={p.lat} //latitude of marker
                             longitude={p.long} //longitutde of marker
-                            offsetLeft={-20}
-                            offsetTop={-10}>
+                            offsetLeft={-viewport.zoom * 3.5} //offset left
+                            offsetTop={-viewport.zoom * 7} //offset top
+                        >
                             <Room style={{ fontSize: viewport.zoom * 7, color: p.username === currentUser ? "tomato" : "slateblue", cursor: "pointer" }}
                                 onClick={() => handleMarkerClick(p._id, p.lat, p.long)} //function to handle the marker on click
                             />
@@ -110,11 +144,8 @@ function App() {
                                     <p className="desc">{p.desc}</p>
                                     <label>Rating</label>
                                     <div className="stars">
-                                        <Star className="star" />
-                                        <Star className="star" />
-                                        <Star className="star" />
-                                        <Star className="star" />
-                                        <Star className="star" />
+                                        {/* taking the rating as an array and filling it with stars component */}
+                                        {Array(p.rating).fill(<Star className="star" />)}
                                     </div>
                                     <label>Information </label>
                                     <span className="username">Created by <b>{p.username}</b> </span>
@@ -136,14 +167,16 @@ function App() {
                         onClose={() => setNewPlace(null)} //closing the popup
                     >
                         <div>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 {/* form to add a new pin */}
                                 <label>Title</label>
-                                <input placeholder="Enter a title" />
+                                <input placeholder="Enter a title"
+                                    onChange={(e) => setTitle(e.target.value)} />
                                 <label>Review</label>
-                                <textarea placeholder="Say us something about this place." />
+                                <textarea placeholder="Say us something about this place."
+                                    onChange={(e) => setDesc(e.target.value)} />
                                 <label>Rating</label>
-                                <select>
+                                <select onChange={(e) => setRating(e.target.value)} >
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
