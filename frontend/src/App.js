@@ -17,9 +17,12 @@ import axios from "axios";
 //importing format
 import { format } from "timeago.js";
 
+//import Register
+import Register from "./components/Register";
+
 function App() {
-    //temporary current user
-    const currentUser = "Saurav Borah"
+    //creating a useState hook for setting the currentuser 
+    const [currentUser, setCurrentUser] = useState(null);
 
     //creating a usestate hook for setting and using pins
     const [pins, setPins] = useState([]);
@@ -183,11 +186,23 @@ function App() {
                                     <option value="4">4</option>
                                     <option value="5">5</option>
                                 </select>
-                                <button className="submitButton" type="submit">Add Pin</button>
+                                <button className="submitButton" type="submit">
+                                    Add Pin
+                                </button>
                             </form>
                         </div>
                     </Popup>
                 )}
+                {/* if there is current user than we can only logout */}
+                {/* else we should se the login and register button */}
+                {currentUser ? (<button className="button logout">Log out</button>
+                ) : (
+                    <div className="buttons">
+                        <button className="button login">Login</button>
+                        <button className="button register">Register</button>
+                    </div>
+                )}
+                <Register/>
             </ReactMapGL>
         </div >
     );
