@@ -28,7 +28,8 @@ function App() {
     const myStorage = window.localStorage;
 
     //creating a useState hook for setting the currentuser 
-    const [currentUser, setCurrentUser] = useState(null);
+    //getting and item from myStorage
+    const [currentUser, setCurrentUser] = useState(myStorage.getItem("user"));
 
     //creating a usestate hook for setting and using pins
     const [pins, setPins] = useState([]);
@@ -118,6 +119,14 @@ function App() {
         } catch (err) {
             console.log(err);//logging the error
         }
+    };
+
+    //function to handle logout
+    const handleLogout = () => {
+        //remove item from local storage
+        myStorage.removeItem("user");
+        //setting the current user to null
+        setCurrentUser(null);
     }
 
     return (
@@ -208,7 +217,7 @@ function App() {
                 {/* if there is current user than we can only logout */}
                 {/* else we should se the login and register button */}
                 {currentUser ? (
-                    <button className="button logout">Log out</button>
+                    <button className="button logout" onClick={handleLogout}>Log out</button>
                 ) : (
                     <div className="buttons">
                         <button className="button login" onClick={() => setShowLogin(true)} >
