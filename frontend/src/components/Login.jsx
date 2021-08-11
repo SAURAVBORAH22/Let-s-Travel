@@ -12,7 +12,7 @@ import axios from 'axios';
 
 
 //taking setShowLogin as prop
-export default function Login({ setShowLogin }) {
+export default function Login({ setShowLogin, myStorage, setCurrentUser }) {
     //creating a useState to check whether error
     const [error, setError] = useState(false);
 
@@ -31,7 +31,13 @@ export default function Login({ setShowLogin }) {
         };
         try {
             //posting the details to backend
-            await axios.post("/users/login", user);
+            const res = await axios.post("/users/login", user);
+            //setting the item in mystorage in key value pair
+            myStorage.setItem("user", res.data.username);
+            //setting the login status to false
+            setShowLogin(false);
+            //setting the current user in current user
+            setCurrentUser(res.data.username);
             //setting error
             setError(false);
         } catch (err) {
@@ -54,7 +60,7 @@ export default function Login({ setShowLogin }) {
                 {error && <span className="failure">Something went wrong!</span>}
             </form>
             {/* making the cancel button clickable */}
-            <Cancel className="loginCancel" onClick={()=>setShowLogin(false)} />
+            <Cancel className="loginCancel" onClick={() => setShowLogin(false)} />
         </div>
     );
 }

@@ -24,6 +24,9 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 
 function App() {
+    //creating local storage
+    const myStorage = window.localStorage;
+
     //creating a useState hook for setting the currentuser 
     const [currentUser, setCurrentUser] = useState(null);
 
@@ -220,7 +223,7 @@ function App() {
                     </div>
                 )}
                 {showRegister && <Register setShowRegister={setShowRegister} />}
-                {showLogin && <Login setShowLogin={setShowLogin} />}
+                {showLogin && <Login setShowLogin={setShowLogin} myStorage={myStorage} setCurrentUser={setCurrentUser} />}
             </ReactMapGL>
         </div >
     );
